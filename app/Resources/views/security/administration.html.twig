@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{{ parent() }}
+<ul>Back-office
+  <li><a href='{{ path('administration_category_new') }}'> Ajouter une catégories</a></li>
+  <li><a href='{{ path('administration_tag_new') }}'> Ajouter un tag</a></li>
+  <li><a href='{{ path('administration_article_new') }}'> Ajouter un article</a></li>
+</ul>
+
+{% endblock %}

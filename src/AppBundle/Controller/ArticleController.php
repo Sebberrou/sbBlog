@@ -17,7 +17,7 @@ class ArticleController extends Controller
     /**
      * Lists last articles entities.
      *
-     * @Route("/", name="_index")
+     * @Route("/article/", name="article_index")
      * @Method("GET")
      */
     public function indexAction(Request $request)
@@ -33,7 +33,7 @@ class ArticleController extends Controller
     /**
      * Lists articles with pagination entities.
      *
-     * @Route("/page/{page}/{nb}", name="_page", requirements={"page": "\d+", "nb": "\d+"})
+     * @Route("/article/page/{page}/{nb}", name="article_page", requirements={"page": "\d+", "nb": "\d+"})
      * @Method("GET")
      */
     public function pageAction(Request $request, $page = 1, $nb = 10)
@@ -42,7 +42,7 @@ class ArticleController extends Controller
         $name = $request-get('query_name');
         $tag = $request->get('query_tag');
         $articles = $em->getRepository('AppBundle:Article')->getPage($page, $nb, ['name' =>$name, 'tag'=>$tag]);
-
+        dump('articles');
         return $this->render('article/index.html.twig', array(
             'articles' => $articles,
         ));
@@ -51,7 +51,7 @@ class ArticleController extends Controller
     /**
      * Creates a new article entity.
      *
-     * @Route("/administration/new", name="_new")
+     * @Route("/administration/article/new", name="administration_article_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -77,7 +77,7 @@ class ArticleController extends Controller
     /**
      * Finds and displays a article entity.
      *
-     * @Route("/{id}", name="_show")
+     * @Route("/article/{id}", name="article_show")
      * @Method("GET")
      */
     public function showAction(Article $article)
@@ -93,7 +93,7 @@ class ArticleController extends Controller
     /**
      * Displays a form to edit an existing article entity.
      *
-     * @Route("/administration/{id}/edit", name="_edit")
+     * @Route("/administration/article/{id}/edit", name="administration_article_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Article $article)
@@ -118,7 +118,7 @@ class ArticleController extends Controller
     /**
      * Deletes a article entity.
      *
-     * @Route("/administration/{id}", name="_delete")
+     * @Route("/administration/article/{id}", name="administration_article_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Article $article)

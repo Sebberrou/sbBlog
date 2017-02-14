@@ -198,26 +198,26 @@ class Article
     }
 
     /**
-     * Set tag
+     * Set tags
      *
-     * @param \stdClass $tag
+     * @param \stdClass $tags
      *
      * @return Article
      */
-    public function setTag($tag)
+    public function setTags($tags)
     {
-        $this->tag = $tag;
+        $this->tags = $tags;
 
         return $this;
     }
 
     /**
-     * Get tag
+     * Get tags
      *
      * @return \stdClass
      */
-    public function getTag()
+    public function getTags()
     {
-        return $this->tag;
+        return $this->tags;
     }
 }

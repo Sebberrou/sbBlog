@@ -6,10 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * Security controller.
+ *
+ * @Route("/")
+ */
 class SecurityController extends Controller
 {
   /**
-    * @Route("/login", name="login")
+    * @Route("/administration/login", name="login")
     */
    public function loginAction(Request $request)
    {
@@ -26,4 +31,11 @@ class SecurityController extends Controller
         'error'         => $error,
     ));
    }
+   /**
+     * @Route("/administration/", name="administration")
+     */
+    public function administrationAction(Request $request)
+    {
+     return $this->render('security/administration.html.twig');
+    }
 }

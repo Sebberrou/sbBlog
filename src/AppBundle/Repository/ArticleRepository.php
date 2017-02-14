@@ -27,10 +27,14 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     if (!empty(array_filter($query))){
       if ($name = $query['name']){
         $queryBuilder->Where('a.name LIKE \'%:name%\'')
-              ->setParameter('name', $name);
+                     ->setParameter('name', $name)
+                     ;
       }
       if ($tag = $query['tag']){
-        $queryBuilder->join('AppBundle:Tag', 't', 'WITH', 't.id = a.')
+        $queryBuilder->leftJoin('a.tags', 't')
+                     ->Where('t.name LIKE \'%:tag%\'')
+                     ->setParameter('tag', $tag)
+                     ;
       }
     }
     $query->getQuery()
@@ -38,5 +42,4 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
           ;
   }
 
-  public function
 }
