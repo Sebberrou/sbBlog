@@ -10,4 +10,33 @@ namespace AppBundle\Repository;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+
+  public function findLast($nb = 10){
+    return $this->createQueryBuilder('a')
+                ->OrderBy('a.date','DESC')
+                ->setMaxResults($nb)
+                ->getQuery()
+                ->getResult()
+                ;
+  }
+  public function getPage($page = 1, $nb = 10, $query){
+    $queryBuilder = $this->createQueryBuilder('a')
+                ->OrderBy('a.date','DESC')
+                ->setMaxResults($nb)
+                ->setOffset($nb * ($page - 1));
+    if (!empty(array_filter($query))){
+      if ($name = $query['name']){
+        $queryBuilder->Where('a.name LIKE \'%:name%\'')
+              ->setParameter('name', $name);
+      }
+      if ($tag = $query['tag']){
+        $queryBuilder->join('AppBundle:Tag', 't', 'WITH', 't.id = a.')
+      }
+    }
+    $query->getQuery()
+          ->getResult()
+          ;
+  }
+
+  public function
 }

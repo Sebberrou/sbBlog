@@ -20,10 +20,15 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        default:
+            anonymous: ~
         main:
             form_login:
                 login_path: login
                 check_path: login
+            logout:
+              path: logout
+              target: /
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         # require ROLE_ADMIN for /administration*

@@ -15,16 +15,33 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 class ArticleController extends Controller
 {
     /**
-     * Lists all article entities.
+     * Lists last articles entities.
      *
      * @Route("/", name="_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository('AppBundle:Article')->findLast();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAll();
+        return $this->render('article/index.html.twig', array(
+            'articles' => $articles,
+        ));
+    }
+
+    /**
+     * Lists articles with pagination entities.
+     *
+     * @Route("/page/{page}/{nb}", name="_page", requirements={"page": "\d+", "nb": "\d+"})
+     * @Method("GET")
+     */
+    public function pageAction(Request $request, $page = 1, $nb = 10)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $name = $request-get('query_name');
+        $tag = $request->get('query_tag');
+        $articles = $em->getRepository('AppBundle:Article')->getPage($page, $nb, ['name' =>$name, 'tag'=>$tag]);
 
         return $this->render('article/index.html.twig', array(
             'articles' => $articles,
