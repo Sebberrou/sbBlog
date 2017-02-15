@@ -24,11 +24,11 @@
       <th>Content</th>
       <th>Author</th>
       <th>Date</th>
-      <th>Actions</th>
+      <th>Comments</th>
+      {% if app.user %}<th>Actions</th>{% endif %}
     </tr>
   </thead>
   <tbody>
-    {{ dump(articles)}}
     {% for article in articles %}
     <tr>
       <td><a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
@@ -36,7 +36,8 @@
       <td>{{ article.content }}</td>
       <td>{{ article.author }}</td>
       <td>{{ article.date|date('Y-m-d') }}</td>
-      <td>
+      <td>{{ getCountComment(article.id) }} comments</td>
+      {% if app.user %}<td>
         <ul>
           <li>
             <a href="{{ path('article_show', { 'id': article.id }) }}">show</a>
@@ -45,7 +46,7 @@
             <a href="{{ path('administration_article_edit', { 'id': article.id }) }}">edit</a>
           </li>
         </ul>
-      </td>
+      </td>{% endif %}
     </tr>
     {% endfor %}
   </tbody>

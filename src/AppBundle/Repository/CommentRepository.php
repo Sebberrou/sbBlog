@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class CommentRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getCommentCount($id){
+      return $this->createQueryBuilder('c')
+                  ->select('count(c.id)')
+                  ->where('c.article = :id')
+                  ->setParameter(':id', $id)
+                  ->getQuery()
+                  ->getSingleScalarResult();
+  }
 }

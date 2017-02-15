@@ -44,7 +44,6 @@ class ArticleController extends Controller
         $name = $request->get('query_name');
         $tag = $request->get('query_tag');
         $articles = $em->getRepository('AppBundle:Article')->getPage($page, $nb, ['name' =>$name, 'tag'=>$tag]);
-        dump($articles);
         $maxPages = ceil(count($articles) / $nb);
 
         # ArrayIterator

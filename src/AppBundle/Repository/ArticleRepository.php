@@ -28,7 +28,6 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
                         ->leftJoin('a.tags', 't')
                         ->setFirstResult($nb * ($page - 1));
     if (!empty(array_filter($query))){
-      dump("in first if");
       if ($name = $query['name']){
         $qB->Where("a.name LIKE :name")
            ->setParameter('name', "%{$name}%")
