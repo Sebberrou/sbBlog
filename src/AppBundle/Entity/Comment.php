@@ -41,7 +41,12 @@ class Comment
      * @ORM\Column(name="date", type="datetimetz")
      */
     private $date;
-
+      /**
+      * @ORM\ManyToOne(targetEntity="Article", inversedBy="comments", cascade={"persist", "merge"})
+      * @ORM\JoinColumns({
+      *  @ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+      */
+    private $article;
 
     /**
      * Get id
@@ -124,5 +129,43 @@ class Comment
     {
         return $this->date;
     }
-}
 
+    /**
+     * Set the value of Id
+     *
+     * @param int id
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Article
+     *
+     * @return mixed
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+
+    /**
+     * Set the value of Article
+     *
+     * @param mixed article
+     *
+     * @return self
+     */
+    public function setArticle($article)
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+}

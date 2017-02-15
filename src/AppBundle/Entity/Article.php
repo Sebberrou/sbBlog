@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
- * 
+ *
  */
 class Article
 {
@@ -59,14 +59,22 @@ class Article
     private $category;
 
     /**
-    * @var \AppBundle\Entity\Tag
+    * @var ArrayCollection
     * @ORM\ManyToMany(targetEntity="Tag")
     * @ORM\JoinColumn(nullable=true)
     */
     private $tags;
 
+    /**
+    * @var ArrayCollection
+    * @ORM\OneToMany(targetEntity="Comment", mappedBy="article" , cascade={"persist", "remove", "merge"})
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $comments;
+
     public function __construct(){
       $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+      $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
      * Get id
@@ -220,5 +228,29 @@ class Article
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Set comments
+     *
+     * @param \stdClass $comments
+     *
+     * @return Article
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \stdClass
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

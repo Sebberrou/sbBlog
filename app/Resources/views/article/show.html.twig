@@ -26,6 +26,14 @@
                 <th>Date</th>
                 <td>{{ article.date|date('Y-m-d') }}</td>
             </tr>
+            <tr>
+                <th>Catégorie</th>
+                <td>{{ article.category.name }}</td>
+            </tr>
+            <tr>
+                <th>Tags</th>
+                <td> {{article.tags|join(', ')}}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -42,4 +50,17 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+    {{ form_start(comment_form) }}
+        {{ form_widget(comment_form) }}
+        <input type="submit" value="Send comment" />
+    {{ form_end(comment_form) }}
+    <div class="comments">
+    {% for comment in article.comments %}
+      <div>
+        <p><span>{{comment.author}}</span> le <span>{{comment.date|date('Y-m-d à H-m')}}</span> min</p>
+        <hr/>
+        <div>{{comment.content}}</div>
+      </div>
+    {% endfor %}
+    </div>
 {% endblock %}

@@ -3,7 +3,19 @@
 {% block body %}
 {{ parent() }}
 <h1>Articles list</h1>
-
+<form method="GET" action='{{path('article_page')}}'class="row">
+  <div class="input-field col s5">
+    <input id="query_name" type="search" name="query_name" class="validate">
+    <label for="query_name">Recherche par nom</label>
+  </div>
+  <div class="input-field col s5">
+    <input id="query_tag" type="search" name="query_tag" class="validate">
+    <label for="query_tag">Recherche par tag</label>
+  </div>
+  <div class="input-field col s2">
+    <input type='submit' value="Recherche"/>
+  </div>
+</form>
 <table>
   <thead>
     <tr>
@@ -16,6 +28,7 @@
     </tr>
   </thead>
   <tbody>
+    {{ dump(articles)}}
     {% for article in articles %}
     <tr>
       <td><a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
@@ -46,7 +59,7 @@
 
   {# Render each page number #}
   {% for i in 1..maxPages %}
-  <li {{ currentPage == i ? 'class="active"' }}>
+  <li {{ currentPage == i ? 'class="active"' : 'class="waves-effect"'}}>
     <a href="{{ path('article_page', {'page': i, 'nb': currentnb}) }}">{{ i }}</a>
   </li>
   {% endfor %}

@@ -25,27 +25,30 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     $qB = $this->createQueryBuilder('a')
                         ->select('a')
                         ->setMaxResults($nb)
-                        ->leftJoin('a.tags', 'tag')
+                        ->leftJoin('a.tags', 't')
                         ->setFirstResult($nb * ($page - 1));
+    if (!empty(array_filter($query))){
+      dump("in first if");
+      if ($name = $query['name']){
+        $qB->Where('a.name LIKE :name')
+           ->setParameter('name', $name)
+           ;
+      dump("in second if");
+      dump($query['name']);
+      }
+      if ($tag = $query['tag']){
+        $qB->Where('t.name LIKE :tag')
+           ->setParameter('tag', $tag)
+                     ;
+          dump("in thirds if");
+
+      }
+    }
+
     $page = new Paginator($qB);
     return $page;
-    // if (!empty(array_filter($query))){
-    //   if ($name = $query['name']){
-    //     $queryBuilder->Where('a.name LIKE \'%:name%\'')
-    //                  ->setParameter('name', $name)
-    //                  ;
-    //   }
-    //   if ($tag = $query['tag']){
-    //     $queryBuilder->leftJoin('a.tags', 't')
-    //                  ->Where('t.name LIKE \'%:tag%\'')
-    //                  ->setParameter('tag', $tag)
-    //                  ;
-    //   }
-    // }
-    //
-    // return $queryBuilder->getQuery()
-    //             ->getResult()
-    //             ;
+
+
   }
 
 }

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Comment;
 
 class ArticleListener
 {
@@ -25,11 +26,12 @@ class ArticleListener
     }
 
     public function setDateAndAuthor($entity){
-      if (!$entity instanceof Article){
+      if (!$entity instanceof Article && !$entity instanceof Comment ){
         return;
       }
       $entity->setDate(new \DateTime());
-      $entity->setAuthor($this->context->getToken()->getUser()->getUsername());
+      if (!$entity->getAuthor())
+        $entity->setAuthor($this->context->getToken()->getUser()->getUsername());
 
     }
 

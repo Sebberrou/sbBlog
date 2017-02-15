@@ -1,14 +1,14 @@
 <?php
-// src/AppBundle/Form/DataTransformer/CategoryToNameTransformer.php
+// src/AppBundle/Form/DataTransformer/ArticleToHiddenTransformer.php
 namespace AppBundle\Form\DataTransformer;
 
-use AppBundle\Entity\Body;
+use AppBundle\Entity\Article;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-class CategoryToNameTransformer implements DataTransformerInterface
+class ArticleToHiddenTransformer implements DataTransformerInterface
 {
     private $manager;
 
@@ -18,51 +18,47 @@ class CategoryToNameTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms an object (category) to a string (name).
+     * Transforms an object (article) to a string (name).
      *
-     * @param  Category|null $category
+     * @param  Article|null $category
      * @return string
      */
-    public function transform($category)
+    public function transform($article)
     {
-        if (null === $category) {
-            return '';
-        }
-
-        return $category->getName();
+        return $article;
     }
 
     /**
      * Transforms a string (number) to an object (issue).
      *
-     * @param  string $categoryNumber
+     * @param  string $articleNumber
      * @return Category|null
      * @throws TransformationFailedException if object (category) is not found.
      */
-    public function reverseTransform($categoryName)
+    public function reverseTransform($articleId)
     {
         // no body name? It's optional, so that's ok
-        if (!$categoryName) {
+        if (!$articleId) {
             return;
         }
 
-        $category = $this->manager
-            ->getRepository('AppBundle:Category')
+        $article = $this->manager
+            ->getRepository('AppBundle:Article')
             // query for the body with this name
-            ->findOneByName($categoryName)
+            ->find($articleId)
         ;
 
-        if (null === $category) {
+        if (null === $article) {
             // causes a validation error
             // this message is not shown to the user
             // see the invalid_message option
             throw new TransformationFailedException(sprintf(
                 'Un astre avec le nom "%s" n\'existe pas',
-                $categoryName
+                $articleName
             ));
         }
 
-        return $category;
+        return $article;
     }
 }
 

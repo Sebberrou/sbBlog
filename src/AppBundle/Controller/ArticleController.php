@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -43,7 +44,7 @@ class ArticleController extends Controller
         $name = $request->get('query_name');
         $tag = $request->get('query_tag');
         $articles = $em->getRepository('AppBundle:Article')->getPage($page, $nb, ['name' =>$name, 'tag'=>$tag]);
-
+        dump($articles);
         $maxPages = ceil(count($articles) / $nb);
 
         # ArrayIterator
@@ -92,10 +93,15 @@ class ArticleController extends Controller
     public function showAction(Article $article)
     {
         $deleteForm = $this->createDeleteForm($article);
-
+        $comment = new Comment();
+        $commentForm = $this->createForm('AppBundle\Form\CommentType', $comment,[
+          'action' => $this->generateUrl('comment_new'),
+          'article_id' => $article->getId(),
+        ]);
         return $this->render('article/show.html.twig', array(
             'article' => $article,
             'delete_form' => $deleteForm->createView(),
+            'comment_form' => $commentForm->createView(),
         ));
     }
 

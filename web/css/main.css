@@ -3,10 +3,19 @@ body{
   padding-right: 30%;
 }
 .pagination{
+  width:100%;
   display:inline-flex;
   justify-content: space-between;
 }
 .pagination>li{
   list-style: none;
-  padding:1em;
+  margin:1em;
+}
+
+.comments{
+  padding: 0em 1em 1em 1em;
+}
+.comments>*:nth-child(odd){
+  background-color: #EEE;
+  text-align: right;
 }
