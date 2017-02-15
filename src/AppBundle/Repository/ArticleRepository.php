@@ -30,18 +30,14 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     if (!empty(array_filter($query))){
       dump("in first if");
       if ($name = $query['name']){
-        $qB->Where('a.name LIKE :name')
-           ->setParameter('name', $name)
+        $qB->Where("a.name LIKE :name")
+           ->setParameter('name', "%{$name}%")
            ;
-      dump("in second if");
-      dump($query['name']);
       }
       if ($tag = $query['tag']){
-        $qB->Where('t.name LIKE :tag')
-           ->setParameter('tag', $tag)
-                     ;
-          dump("in thirds if");
-
+        $qB->andWhere("t.name LIKE :tag")
+           ->setParameter('tag', "%{$tag}%")
+           ;
       }
     }
 
