@@ -5,7 +5,9 @@
     <h1>Tag edit</h1>
 
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
+    <div class='input-filed'>
+      {{form_row(edit_form.name)}}
+    </div>
         <input type="submit" value="Edit" />
     {{ form_end(edit_form) }}
 

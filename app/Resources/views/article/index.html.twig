@@ -2,45 +2,65 @@
 
 {% block body %}
 {{ parent() }}
-    <h1>Articles list</h1>
+<h1>Articles list</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Content</th>
-                <th>Author</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td><a href="{{ path('_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
-                <td>{{ article.name }}</td>
-                <td>{{ article.content }}</td>
-                <td>{{ article.author }}</td>
-                <td>{{ article.date }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('_show', { 'id': article.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('_edit', { 'id': article.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Content</th>
+      <th>Author</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for article in articles %}
+    <tr>
+      <td><a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
+      <td>{{ article.name }}</td>
+      <td>{{ article.content }}</td>
+      <td>{{ article.author }}</td>
+      <td>{{ article.date|date('Y-m-d') }}</td>
+      <td>
+        <ul>
+          <li>
+            <a href="{{ path('article_show', { 'id': article.id }) }}">show</a>
+          </li>
+          <li>
+            <a href="{{ path('administration_article_edit', { 'id': article.id }) }}">edit</a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if maxPages is defined and maxPages > 1 %}
+<ul class="pagination">
+  {# `«` arrow  #}
+  <li {{ currentPage == 1 ? 'class="disabled"' }}>
+    <a href="{{ path('article_page', {'page': currentPage-1 < 1 ? 1 : currentPage-1, 'nb': currentnb}) }}">«</a>
+  </li>
 
-    <ul>
-        <li>
-            <a href="{{ path('_new') }}">Create a new article</a>
-        </li>
-    </ul>
+  {# Render each page number #}
+  {% for i in 1..maxPages %}
+  <li {{ currentPage == i ? 'class="active"' }}>
+    <a href="{{ path('article_page', {'page': i, 'nb': currentnb}) }}">{{ i }}</a>
+  </li>
+  {% endfor %}
+
+  {# `»` arrow #}
+  <li {{ currentPage == maxPages ? 'class="disabled"' }}>
+    <a href="{{ path('article_page', {'page': currentPage+1 <= maxPages ? currentPage+1 : currentPage, 'nb': currentnb}) }}">»</a>
+  </li>
+</ul>
+{% endif %}
+
+<ul>
+  <li>
+    <a href="{{ path('administration_article_new') }}">Create a new article</a>
+  </li>
+</ul>
 {% endblock %}

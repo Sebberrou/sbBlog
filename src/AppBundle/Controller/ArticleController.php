@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Article controller.
@@ -39,12 +40,20 @@ class ArticleController extends Controller
     public function pageAction(Request $request, $page = 1, $nb = 10)
     {
         $em = $this->getDoctrine()->getManager();
-        $name = $request-get('query_name');
+        $name = $request->get('query_name');
         $tag = $request->get('query_tag');
         $articles = $em->getRepository('AppBundle:Article')->getPage($page, $nb, ['name' =>$name, 'tag'=>$tag]);
-        dump('articles');
+
+        $maxPages = ceil(count($articles) / $nb);
+
+        # ArrayIterator
+        #$iterator = $articles->getIterator();
+
         return $this->render('article/index.html.twig', array(
             'articles' => $articles,
+            'maxPages' => $maxPages,
+            'currentPage' => $page,
+            'currentnb' => $nb
         ));
     }
 
@@ -65,7 +74,7 @@ class ArticleController extends Controller
             $em->persist($article);
             $em->flush($article);
 
-            return $this->redirectToRoute('_show', array('id' => $article->getId()));
+            return $this->redirectToRoute('article_show', array('id' => $article->getId()));
         }
 
         return $this->render('article/new.html.twig', array(
@@ -105,7 +114,7 @@ class ArticleController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('_edit', array('id' => $article->getId()));
+            return $this->redirectToRoute('administration_article_edit', array('id' => $article->getId()));
         }
 
         return $this->render('article/edit.html.twig', array(
@@ -132,7 +141,7 @@ class ArticleController extends Controller
             $em->flush($article);
         }
 
-        return $this->redirectToRoute('_index');
+        return $this->redirectToRoute('article_index');
     }
 
     /**
@@ -145,7 +154,7 @@ class ArticleController extends Controller
     private function createDeleteForm(Article $article)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('_delete', array('id' => $article->getId())))
+            ->setAction($this->generateUrl('administration_article_delete', array('id' => $article->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

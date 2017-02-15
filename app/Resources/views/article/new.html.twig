@@ -5,13 +5,24 @@
     <h1>Article creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+      <div class='input-filed'>
+        {{form_row(form.name)}}
+      </div>
+      <div class='input-filed'>
+        {{form_row(form.content)}}
+      </div>
+      <div class='input-filed'>
+        {{form_row(form.category)}}
+      </div>
+      <div class='input-filed'>
+        {{form_row(form.tags)}}
+      </div>
         <input type="submit" value="Create" />
     {{ form_end(form) }}
 
     <ul>
         <li>
-            <a href="{{ path('_index') }}">Back to the list</a>
+            <a href="{{ path('article_index') }}">Back to the list</a>
         </li>
     </ul>
 {% endblock %}

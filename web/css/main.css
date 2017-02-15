@@ -1,0 +1,12 @@
+body{
+  padding-left: 30%;
+  padding-right: 30%;
+}
+.pagination{
+  display:inline-flex;
+  justify-content: space-between;
+}
+.pagination>li{
+  list-style: none;
+  padding:1em;
+}

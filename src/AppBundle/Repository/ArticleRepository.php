@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * ArticleRepository
  *
@@ -19,27 +21,31 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
                 ->getResult()
                 ;
   }
-  public function getPage($page = 1, $nb = 10, $query){
-    $queryBuilder = $this->createQueryBuilder('a')
-                ->OrderBy('a.date','DESC')
-                ->setMaxResults($nb)
-                ->setOffset($nb * ($page - 1));
-    if (!empty(array_filter($query))){
-      if ($name = $query['name']){
-        $queryBuilder->Where('a.name LIKE \'%:name%\'')
-                     ->setParameter('name', $name)
-                     ;
-      }
-      if ($tag = $query['tag']){
-        $queryBuilder->leftJoin('a.tags', 't')
-                     ->Where('t.name LIKE \'%:tag%\'')
-                     ->setParameter('tag', $tag)
-                     ;
-      }
-    }
-    $query->getQuery()
-          ->getResult()
-          ;
+  public function getPage($page = 1, $nb = 2, $query){
+    $qB = $this->createQueryBuilder('a')
+                        ->select('a')
+                        ->setMaxResults($nb)
+                        ->leftJoin('a.tags', 'tag')
+                        ->setFirstResult($nb * ($page - 1));
+    $page = new Paginator($qB);
+    return $page;
+    // if (!empty(array_filter($query))){
+    //   if ($name = $query['name']){
+    //     $queryBuilder->Where('a.name LIKE \'%:name%\'')
+    //                  ->setParameter('name', $name)
+    //                  ;
+    //   }
+    //   if ($tag = $query['tag']){
+    //     $queryBuilder->leftJoin('a.tags', 't')
+    //                  ->Where('t.name LIKE \'%:tag%\'')
+    //                  ->setParameter('tag', $tag)
+    //                  ;
+    //   }
+    // }
+    //
+    // return $queryBuilder->getQuery()
+    //             ->getResult()
+    //             ;
   }
 
 }
