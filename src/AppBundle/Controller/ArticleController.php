@@ -20,6 +20,7 @@ class ArticleController extends Controller
      * Lists last articles entities.
      *
      * @Route("/article/", name="article_index")
+     * @Route("/"
      * @Method("GET")
      */
     public function indexAction(Request $request)
