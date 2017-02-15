@@ -71,10 +71,11 @@
   </li>
 </ul>
 {% endif %}
-
+{% if app.user %}
 <ul>
   <li>
     <a href="{{ path('administration_article_new') }}">Create a new article</a>
   </li>
 </ul>
+{% endif %}
 {% endblock %}

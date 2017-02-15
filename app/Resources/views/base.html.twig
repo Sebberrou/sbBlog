@@ -16,8 +16,9 @@
         <h1>Hello Blog !</h1>
       </header>
         {% block body %}
+        <a href='{{ path('login')}}'>Connection</a>
           {% if app.user %}
-            <a href='{{ path('administration') }}'> Administration</a>
+            <a href='{{ path('administration') }}'> Administration</a><a href='{{ path('logout')}}'>Logout</a>
           {% endif %}
         {% endblock %}
         {% block javascripts %}

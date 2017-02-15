@@ -26,8 +26,8 @@ security:
                 login_path: /administration/login
                 check_path: /administration/login
             logout:
-              path: /administration/logout
-              target: /
+              path: /logout
+              target: /article
     access_control:
         - { path: ^/administration/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         # require ROLE_ADMIN for /administration*
